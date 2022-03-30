@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,9 @@ CORS_ALLOW_HEADERS = (
 )
 
 APPEND_SLASH = False
+
+LANGUAGE_CODE = 'ko-kr'
+TIME_ZONE = 'Asia/Seoul'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = False
