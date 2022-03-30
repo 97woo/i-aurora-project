@@ -2,10 +2,9 @@ from django.http                  import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views         import APIView
 
-from .serializers import UserSerializer
-from users.models import User
+from .serializers           import UserSerializer
+from users.models           import User
 from rest_framework.parsers import JSONParser
-
 
 class SignUpView(APIView):
     def post(self,request):
