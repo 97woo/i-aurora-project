@@ -1,6 +1,6 @@
 from django.urls import path, include
-from users.views import HelloAPI
+from users import views
 
 urlpatterns = [
-    
+    path('signup/', views.SignUp.as_view())
 ]
