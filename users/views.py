@@ -15,7 +15,7 @@ def id_check(request):
         if serializer.is_valid():
             return JsonResponse(serializer.data,status=200)
         else:
-            return Response(serializer.errors, status=404)
+            return Response(serializer.errors, status=400)
     return JsonResponse(serializer.data, status=201)
     
 class SignUpView(APIView):
