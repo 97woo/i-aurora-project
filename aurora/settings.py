@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import pymysql
 
-from pathlib import Path
-
+from pathlib     import Path
 from my_settings import DATABASES, SECRET_KEY
 
-import pymysql
 
 pymysql.install_as_MySQLdb()
 
@@ -45,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'users'
+    'users',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -154,8 +154,19 @@ CORS_ALLOW_HEADERS = (
 
 APPEND_SLASH = False
 
-LANGUAGE_CODE = 'ko-kr'
+# LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  
+    ],
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',) 
+    }
+
+
+
+AUTH_USER_MODEL = 'users.User'
