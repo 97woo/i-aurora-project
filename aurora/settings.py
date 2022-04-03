@@ -13,8 +13,7 @@ import pymysql
 
 from pathlib     import Path
 from my_settings import DATABASES, SECRET_KEY
-
-
+from datetime     import timedelta
 pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,7 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
-    'rest_framework.authtoken'
+    'rest_framework_simplejwt',
+    
 ]
 
 MIDDLEWARE = [
@@ -162,11 +162,22 @@ USE_TZ = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',) 
     }
 
 
 
 AUTH_USER_MODEL = 'users.User'
+
+
+SIMPLE_JWT ={
+    'ACCESS_TOKEN_LIFETIME' : timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=21),
+    'ROTATE_REFRESH_TOKEN'  : False,
+    'TOKEN_USER_CLASS'      : 'users.User',
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
+
+REST_USE_JWT = True

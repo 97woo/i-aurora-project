@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models        import User
 from .validators    import validate_identification , validate_password
+from aurora.settings import aurora_settings
+
+JWT_PAYLOAD_HANDLER = aurora_settings.JWT_PAYLOAD_HANDLER
+JWT_ENCODE_HANDLER = aurora_settings.JWT_ENCODE_HANDLER
 
 
 class UserIDSerializer(serializers.ModelSerializer):

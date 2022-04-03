@@ -6,3 +6,4 @@ PyMySQL==1.0.2
 sqlclient==21.4.24
 django-rest-auth==0.9.5
 requests==2.27.1
+djangorestframework-jwt==1.11.0
