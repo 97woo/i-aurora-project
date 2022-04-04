@@ -1,6 +1,11 @@
 
+<<<<<<< HEAD
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,linux,macos,pycharm,vim,zsh
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,linux,macos,pycharm,vim,zsh
+=======
+# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,linux,macos,zsh,pycharm,vim
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,linux,macos,zsh,pycharm,vim
+>>>>>>> feature/simplejwt
 
 ### Linux ###
 *~
@@ -379,7 +384,11 @@ zsdoc/data
 /tests/_output/*
 !/tests/_output/.gitkeep
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,linux,macos,pycharm,vim,zsh
 
 my_settings.py
 db_uploader.py
+=======
+# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,linux,macos,zsh,pycharm,vim
+>>>>>>> feature/simplejwt
