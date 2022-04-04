@@ -46,14 +46,14 @@ class UserSignInSerializer(serializers.ModelSerializer):
             user = User.objects.get(identification=identification)      
             data['user'] = user
             
-            if not validate_password(password):
-                raise serializers.ValidationError('숫자만으로 6자리를 입력해주세요!')
+            if not user.check_password(password):
+                raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
             
             token = RefreshToken.for_user(user)
             refresh = str(token)
             access = str(token.access_token)
             
-            data = {
+            data ={
                 'user'    : user,
                 'refresh' : refresh,
                 'access'  : access

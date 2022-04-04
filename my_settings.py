@@ -11,3 +11,4 @@ DATABASES = {
 }
 
 SECRET_KEY = 'django-insecure-6lj@1#fyx4(+ylaxfuk1@o8ea76c7$5n4y3-h=s@@oobae=+r7'
+
