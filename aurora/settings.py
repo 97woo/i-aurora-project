@@ -13,7 +13,7 @@ import pymysql
 
 from pathlib     import Path
 from my_settings import DATABASES, SECRET_KEY
-
+from datetime import timedelta
 
 pymysql.install_as_MySQLdb()
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
-    'rest_framework.authtoken'
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -170,3 +170,15 @@ REST_FRAMEWORK = {
 
 
 AUTH_USER_MODEL = 'users.User'
+
+REST_USE_JWT = True
+
+SIMPLE_JWT = {
+    
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETME': timedelta(days=21),
+    'TOKEN_USER_CLASS': 'user.User',
+    'ROTATE_REFRESH_TOKENS':False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}

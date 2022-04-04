@@ -1,10 +1,11 @@
+
 from django.http                     import JsonResponse
 
 from rest_framework.views            import APIView
 from rest_framework.decorators       import api_view
 from rest_framework.permissions      import IsAuthenticated
 from rest_framework.response         import Response
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics         import CreateAPIView
 from .serializers                    import UserSignUpSerializer, UserIDSerializer, UserSignInSerializer
 
@@ -21,17 +22,20 @@ def id_check(request):
     return JsonResponse(serializer.data, status=201)
     
 class SignUpView(CreateAPIView):
-
     serializer_class = UserSignUpSerializer
+        
 
+                  
 class SignInView(APIView):
-       
+    serializer_class = UserSignInSerializer  
     def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=False)
+        user   = serializer.validated_data['user']
+        access = serializer.validated_data['access']
+        refresh = serializer.validated_data['refresh']
         
-        serializer = UserSignInSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-           
-        token, _ = Token.objects.get_or_create(user=user)
-        
-        return Response({'token': token.key})
+        return JsonResponse({
+                'access' : access,
+                'refresh': refresh
+         })

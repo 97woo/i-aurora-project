@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models        import User
 from .validators    import validate_identification , validate_password
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserIDSerializer(serializers.ModelSerializer):
     def validate(self, data):
@@ -35,20 +35,29 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
 
 
-class UserSignInSerializer(serializers.Serializer):
+class UserSignInSerializer(serializers.ModelSerializer):
     identification = serializers.CharField(max_length=100)
     password       = serializers.CharField(max_length=50, write_only=True)
         
     def validate(self, data):
         identification = data.get("identification")
-
+        password       = data.get('password')
         try:
             user = User.objects.get(identification=identification)      
             data['user'] = user
             
-            if not validate_password(data['password']):
+            if not validate_password(password):
                 raise serializers.ValidationError('숫자만으로 6자리를 입력해주세요!')
             
+            token = RefreshToken.for_user(user)
+            refresh = str(token)
+            access = str(token.access_token)
+            
+            data = {
+                'user'    : user,
+                'refresh' : refresh,
+                'access'  : access
+            }
             return data
         
         except User.DoesNotExist:
