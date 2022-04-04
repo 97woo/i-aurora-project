@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
     
     identification     = models.CharField(max_length=100, unique=True)
-    point              = models.DecimalField(decimal_places=2, max_digits = 20, default=1000)
+    point              = models.DecimalField(decimal_places=2, max_digits = 20, default=1000000)
     created_at         = models.DateTimeField(auto_now_add=True)
     updated_at         = models.DateTimeField(auto_now=True)
     
