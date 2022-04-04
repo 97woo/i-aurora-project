@@ -13,11 +13,7 @@ import pymysql
 
 from pathlib     import Path
 from my_settings import DATABASES, SECRET_KEY
-<<<<<<< HEAD
-
-=======
 from datetime import timedelta
->>>>>>> feature/simplejwt
 
 pymysql.install_as_MySQLdb()
 
@@ -49,11 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
-<<<<<<< HEAD
-    'rest_framework.authtoken'
-=======
     'rest_framework_simplejwt'
->>>>>>> feature/simplejwt
 ]
 
 MIDDLEWARE = [
@@ -177,9 +169,6 @@ REST_FRAMEWORK = {
 
 
 
-<<<<<<< HEAD
-AUTH_USER_MODEL = 'users.User'
-=======
 AUTH_USER_MODEL = 'users.User'
 
 REST_USE_JWT = True
@@ -193,4 +182,3 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
 }
->>>>>>> feature/simplejwt

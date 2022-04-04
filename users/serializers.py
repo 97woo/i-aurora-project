@@ -1,11 +1,7 @@
 from rest_framework import serializers
 from .models        import User
 from .validators    import validate_identification , validate_password
-<<<<<<< HEAD
-
-=======
 from rest_framework_simplejwt.tokens import RefreshToken
->>>>>>> feature/simplejwt
 
 class UserIDSerializer(serializers.ModelSerializer):
     def validate(self, data):
@@ -39,30 +35,17 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
 
 
-<<<<<<< HEAD
-class UserSignInSerializer(serializers.Serializer):
-=======
 class UserSignInSerializer(serializers.ModelSerializer):
->>>>>>> feature/simplejwt
     identification = serializers.CharField(max_length=100)
     password       = serializers.CharField(max_length=50, write_only=True)
         
     def validate(self, data):
         identification = data.get("identification")
-<<<<<<< HEAD
-
-=======
         password       = data.get('password')
->>>>>>> feature/simplejwt
         try:
             user = User.objects.get(identification=identification)      
             data['user'] = user
             
-<<<<<<< HEAD
-            if not validate_password(data['password']):
-                raise serializers.ValidationError('숫자만으로 6자리를 입력해주세요!')
-            
-=======
             if not user.check_password(password):
                 raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
             
@@ -75,7 +58,6 @@ class UserSignInSerializer(serializers.ModelSerializer):
                 'refresh' : refresh,
                 'access'  : access
             }
->>>>>>> feature/simplejwt
             return data
         
         except User.DoesNotExist:
