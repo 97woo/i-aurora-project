@@ -65,3 +65,9 @@ class UserSignInSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =['identification','password']
+        
+        
+class UserPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields =['point']
