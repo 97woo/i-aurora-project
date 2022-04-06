@@ -161,12 +161,13 @@ USE_L10N = True
 USE_TZ = False
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
     ],
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',) 
-    }
-
+}
 
 
 AUTH_USER_MODEL = 'users.User'
@@ -175,10 +176,10 @@ REST_USE_JWT = True
 
 SIMPLE_JWT = {
     
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
     'REFRESH_TOKEN_LIFETME': timedelta(days=21),
     'TOKEN_USER_CLASS': 'user.User',
-    'ROTATE_REFRESH_TOKENS':False,
+    'ROTATE_REFRESH_TOKENS':True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
 }
