@@ -70,9 +70,9 @@ class UserSignInSerializer(serializers.ModelSerializer):
         fields =['identification','password']
         
         
-class UserPointSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields =['point']
+        fields =['point','card_number']
         
        

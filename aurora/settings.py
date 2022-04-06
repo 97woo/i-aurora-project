@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'bank',
+    'cashmanagementservice'
 ]
 
 MIDDLEWARE = [
@@ -154,7 +156,7 @@ CORS_ALLOW_HEADERS = (
 
 APPEND_SLASH = False
 
-# LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
