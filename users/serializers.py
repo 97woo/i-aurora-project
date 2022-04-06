@@ -1,3 +1,5 @@
+import random
+
 from rest_framework import serializers
 from .models        import User
 from .validators    import validate_identification , validate_password
@@ -21,16 +23,17 @@ class UserSignUpSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         user = User.objects.create_user(
-        identification= validated_data['identification'],
-        password   = validated_data['password'],
-        point      = self
+            identification = validated_data['identification'],
+            password       = validated_data['password'],
+            point          = self,
+            card_number    = self,
         )
         user.save()
         return user
     
     class Meta:
         model = User
-        fields =['identification', 'password','point']
+        fields =['identification', 'password','point','card_number']
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -71,3 +74,5 @@ class UserPointSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =['point']
+        
+       
