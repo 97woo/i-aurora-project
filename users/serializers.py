@@ -52,9 +52,9 @@ class UserSignInSerializer(serializers.ModelSerializer):
             if not user.check_password(password):
                 raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
             
-            token = RefreshToken.for_user(user)
+            token   = RefreshToken.for_user(user)
             refresh = str(token)
-            access = str(token.access_token)
+            access  = str(token.access_token)
             
             data ={
                 'user'    : user,

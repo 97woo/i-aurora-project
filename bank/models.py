@@ -7,7 +7,6 @@ class Bank(models.Model):
     class Meta:
         db_table = 'banks'
         
-
 class AccountHolder(models.Model):
     name           = models.CharField(max_length=100)
     account_number = models.CharField(max_length=300)
