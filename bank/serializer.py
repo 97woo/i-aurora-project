@@ -2,52 +2,28 @@ from rest_framework import serializers
 from .models        import Bank, AccountHolder
 from .validators    import validate_account_kb, validate_account_ibk, validate_account_sh, validate_account_nh
 from django.db      import models
+from rest_framework.validators import UniqueTogetherValidator
 
 class AccountCheckSerializer(serializers.ModelSerializer):
-    
-    account_number = serializers.CharField(max_length=300)
-    bank           = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     def validate(self, data):
-        print(data)
-        try:
-            if data.get('bank') == "국민":
-                if not validate_account_kb(data['account_number']):
-                    raise serializers.ValidationError('올바른 계좌번호가 아닙니다.')
-                
-                if not AccountHolder.objects.filter(account_number=data['account_number']):
-                        raise serializers.ValidationError('존재하는 계좌번호가 아닙니다.')
-                
-                
-            elif data.get('bank') == "신한":
-                if not validate_account_sh(data['account_number']):
-                    raise serializers.ValidationError('올바른 계좌번호가 아닙니다.')
-                  
-                if not AccountHolder.objects.filter(account_number=data['account_number']):
-                    raise serializers.ValidationError('존재하는 계좌번호가 아닙니다.')
-                    
-            elif data.get('bank') == "농협":
-                if not validate_account_nh(data['account_number']):
-                    raise serializers.ValidationError('올바른 계좌번호가 아닙니다.')
-                    
-                if not AccountHolder.objects.filter(account_number=data['account_number']):
-                    raise serializers.ValidationError('존재하는 계좌번호가 아닙니다.')
-                    
-            elif data.get('bank') == "기업":
-                if not validate_account_ibk(data['account_number']):
-                    raise serializers.ValidationError('올바른 계좌번호가 아닙니다.')
-                    
-                if not AccountHolder.objects.filter(account_number=data['account_number']):
-                    raise serializers.ValidationError('존재하는 계좌번호가 아닙니다.')
-                    
-    
-           
-            account_holder = AccountHolder.objects.get(account_number=data['account_number'])
-            account_holder.name
-            return data,  account_holder.name
         
-        except AccountHolder.DoesNotExist:
-            raise serializers.ValidationError("계좌번호가 존재하지 않습니다.")
+        try:
+            acccount_number = data.get("account_number")
+            bank            = data.get('bank')
     
+            if not Bank.objects.filter(id=bank.id).exists():
+                raise serializers.ValidationError("존재하지 않는 은행입니다.")
+            
+            if not AccountHolder.objects.filter(account_number=acccount_number,bank_id=bank.id).exists():
+                raise serializers.ValidationError("존재하지 않는 계좌입니다. 은행과 계좌번호를 확인해주세요")
+            
+            
+            return data
+        
+       
+        except Bank.DoesNotExist:
+            return serializers.ValidationError("은행이 존재하지 않습니다.")
     class Meta:
-        model = AccountHolder
-        fields =['account_number','bank']
+        model  = AccountHolder
+        fields =['bank', 'account_number'] 
+        
