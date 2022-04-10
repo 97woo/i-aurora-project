@@ -4,7 +4,7 @@ from rest_framework.views       import APIView
 from rest_framework.decorators  import api_view 
 from rest_framework.response    import Response
 from rest_framework.generics    import CreateAPIView
-from .serializers               import UserPointSerializer, UserSignUpSerializer, UserIDSerializer, UserSignInSerializer
+from .serializers               import UserInfoSerializer, UserSignUpSerializer, UserIDSerializer, UserSignInSerializer
 from users.models               import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
@@ -30,8 +30,8 @@ class SignInView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        access = serializer.validated_data['access']
+      
+        access  = serializer.validated_data['access']
         refresh = serializer.validated_data['refresh']
         
         return JsonResponse({
@@ -40,16 +40,15 @@ class SignInView(APIView):
          },status=200)
 
 
-class PointView(APIView):
+class InfoView(APIView):
     permission_classes = (IsAuthenticated,)
-   
     
     def get(self, request):
-        user = request.user
-        user_id = request.user.id
-        print(user_id)
-        queryset   = User.objects.filter(id=user_id)
-        serializer = UserPointSerializer(queryset, many=True)
-        
-        return Response(serializer.data)
+        user       = request.user
+        user_point = user.point
+        user_card  = user.card_number
+        return JsonResponse({
+            "point"       : user_point,
+            "card_number" : user_card
+                             },status=200)
       
