@@ -15,7 +15,7 @@ def id_check(request):
         serializer = UserIDSerializer(data=request.data)
         
         if serializer.is_valid():
-            return JsonResponse(serializer.data,status=200)
+            return Response(serializer.data,status=200)
         else:
             return Response(serializer.errors, status=400)
     return JsonResponse(serializer.data, status=201)

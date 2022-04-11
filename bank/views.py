@@ -9,10 +9,18 @@ from rest_framework             import serializers
 class AccountCheckView(APIView):
     permission_classes = (IsAuthenticated,)
      
-    def get(self, request):
-        serializer  = AccountCheckSerializer(data=request.data)
-    
+    def post(self, request):
+        queryset_account    = AccountHolder.objects.get(account_number=request.data['account_number'])
+        serializer  = AccountCheckSerializer(
+           data=
+                {
+                "bank"           : request.data['bank'],
+                "account_number" : request.data['account_number'],
+                "name"           : queryset_account.name
+                })
+        
         if serializer.is_valid(raise_exception=True):
-            return JsonResponse(serializer.data,status=200)
+            print(serializer)  
+            return Response(serializer.data,status=200)
         else:
             return Response(serializer.errors, status=400)
