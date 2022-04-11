@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class AccountCheckSerializer(serializers.ModelSerializer):
     def validate(self, data):
-        name = serializers.CharField()
+        name = serializers.CharField(read_only=True)
         try:
            
             account_number = data.get("account_number")
@@ -15,9 +15,6 @@ class AccountCheckSerializer(serializers.ModelSerializer):
             if not Bank.objects.filter(id=bank.id).exists():
                 raise serializers.ValidationError("존재하지 않는 은행입니다.")
             
-            if not AccountHolder.objects.filter(account_number=account_number).exists():
-                    raise serializers.ValidationError("입력한 계좌번호가 존재하지 않아요. 계좌번호를 다시 확인해주세요")
-            
             if not AccountHolder.objects.filter(account_number=account_number,bank_id=bank.id).exists():
                 raise serializers.ValidationError("입력한 계좌번호가 존재하지 않아요. 계좌번호를 다시 확인해주세요")
 
@@ -26,7 +23,6 @@ class AccountCheckSerializer(serializers.ModelSerializer):
                 "bank"           : bank,
                 "name"           : name,
             }
-            print(data)
             return data
         
        
