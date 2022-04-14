@@ -51,4 +51,3 @@ class InfoView(APIView):
             "point"       : user_point,
             "card_number" : user_card
                              },status=200)
-      

@@ -184,4 +184,5 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS':True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
+    'USER_ID_CLAIM': 'user_id',
 }
