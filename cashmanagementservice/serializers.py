@@ -1,14 +1,5 @@
 from .models        import Send
-from users.models   import User
-
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.response                 import Response
-from rest_framework.generics                import CreateAPIView
 from rest_framework import serializers
-
-
-
-
 
 class SendMoneySerializer(serializers.ModelSerializer):
     def create(self, validated_data,):
@@ -27,3 +18,7 @@ class SendMoneySerializer(serializers.ModelSerializer):
     class Meta:
         model = Send
         fields =['amount','fee','remittor','recipient','account_no','bank_name','bankcode']
+
+class SendMemoSerializer(serializers.ModelSerializer):
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)

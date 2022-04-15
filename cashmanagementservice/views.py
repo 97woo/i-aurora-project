@@ -26,7 +26,6 @@ class SendMoneyView(CreateAPIView):
                     user = User.objects.get(identification=request.user)
                     user.point = user.point - request.data['amount'] - request.data['fee']
                 
-
                     serializer.save()
                     user.save() 
                     send_first =Send.objects.latest("id").id
@@ -40,9 +39,7 @@ class SendMoneyView(CreateAPIView):
                 
                 else:   
                     return Response(serializer.errors,status=404)
-                
-      
-        
+         
         except DatabaseError:
             raise serializers.ValidationError("잔액이 부족합니다.")
         
