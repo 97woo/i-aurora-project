@@ -30,13 +30,13 @@ class SendMoneyView(CreateAPIView):
                     serializer.save()
                     user.save() 
                     send_first =Send.objects.latest("id").id
-                    print(send_first)
+                   
                     if AccountHolder.objects.get(account_number=request.data['account_no']):
                         recipient = AccountHolder.objects.get(account_number=request.data['account_no'])
                         recipient.deposit =  recipient.deposit + request.data['amount'] 
                         recipient.save()
-                     
-                        return Response({"data":serializer.data,"current_send":send_first}, status=201)
+
+                        return Response({"data":serializer.data,"current_send":send_first,"user_point":user.point}, status=201)
                 
                 else:   
                     return Response(serializer.errors,status=404)

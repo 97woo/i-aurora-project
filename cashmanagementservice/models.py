@@ -13,4 +13,12 @@ class Send(models.Model):
     
     class Meta:
         db_table = 'sends'
+
+class Send_detail(models.Model):
+    memo      = models.CharField(max_length=30)
+    send      = models.ForeignKey('Send',related_name='send_detail', on_delete=models.CASCADE)
+    create_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'send_detail'
         

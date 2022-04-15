@@ -21,5 +21,3 @@ class AccountCheckView(APIView):
             return Response(serializer.data,status=200)
         else:
             return Response(serializer.errors, status=400)
-        
-        
