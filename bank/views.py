@@ -3,15 +3,15 @@ from .serializer                import AccountCheckSerializer
 from rest_framework import serializers
 from rest_framework.response    import Response
 from rest_framework.permissions import IsAuthenticated
-
 from bank.models import AccountHolder
+
 
 class AccountCheckView(APIView):
     permission_classes = (IsAuthenticated,)
     
     def post(self, request):
         try:
-            print(request.session)
+           
             lookup_field = "name"
             serializer = AccountCheckSerializer(
             data=  {

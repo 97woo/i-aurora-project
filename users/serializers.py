@@ -3,6 +3,8 @@ from .models        import User
 from .validators    import validate_identification , validate_password
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
+
 class UserIDSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if not validate_identification(data['identification']):
@@ -43,6 +45,7 @@ class UserSignInSerializer(serializers.ModelSerializer):
     def validate(self, data):
         identification = data.get("identification")
         password       = data.get('password')
+        
         try:
             user = User.objects.get(identification=identification)      
             data['user'] = user
@@ -63,6 +66,7 @@ class UserSignInSerializer(serializers.ModelSerializer):
         
         except User.DoesNotExist:
             raise serializers.ValidationError("사용자가 존재하지 않습니다.")
+    
     class Meta:
         model = User
         fields =['identification','password']

@@ -3,8 +3,8 @@ from django.db                  import transaction
 from django.db.utils            import DatabaseError
 from users.models               import User
 from bank.models                import AccountHolder
-from .models                    import Send
-from .serializers               import SendMoneySerializer
+from .models                    import Send,Send_detail
+from .serializers               import SendMoneySerializer, SendMemoSerializer, SendMoneyListSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views       import APIView
@@ -17,7 +17,7 @@ class SendMoneyView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = SendMoneySerializer
     @transaction.atomic(using='default')
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         try:
             with transaction.atomic():
                 data = request.data
@@ -36,7 +36,6 @@ class SendMoneyView(CreateAPIView):
                         recipient.save()
 
                         return Response({"data":serializer.data,"current_send":send_first,"user_point":user.point}, status=201)
-                
                 else:   
                     return Response(serializer.errors,status=404)
          
@@ -46,3 +45,45 @@ class SendMoneyView(CreateAPIView):
         except ObjectDoesNotExist:
             raise serializers.ValidationError("존재 하지 않는 계좌입니다.")
 
+
+
+class SendMemoView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        data = request.data
+        serializer = SendMemoSerializer(data=data)
+        send_id    = Send.objects.get(id=data["send"])
+        if serializer.is_valid(raise_exception=True):
+            send = Send_detail.objects.create(
+            memo = request.data['memo'],
+            send = send_id
+        )       
+            send.save()
+             
+            return Response(data=serializer.data, status=201)
+        
+    def get_send(self,pk):
+        try:
+            send = Send.objects.get(id=pk)
+            return send
+        
+        except Send.DoesNotExist:
+            return None
+      
+    def get(self, request, pk):
+        send       = self.get_send(pk)
+        user_point = request.user.point  
+        user_card  = request.user.card_number
+        
+        if send is not None:
+            serializer = SendMoneyListSerializer(send)
+           
+            results =[{
+                "senddata"   : serializer.data,
+                "user_point" : user_point,
+                "user_card"  : user_card
+            }]
+            
+            return Response(results,status=200)
+        else:
+            return Response(status=400)
