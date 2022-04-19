@@ -10,7 +10,7 @@ class AccountCheckSerializer(serializers.ModelSerializer):
             name           = account.name
             
             if not AccountHolder.objects.filter(account_number=account_number).exists():
-                    raise serializers.ValidationError("INVALID_ACCOUNTNUMBER")
+                raise serializers.ValidationError("INVALID_ACCOUNTNUMBER")
 
             if not AccountHolder.objects.filter(account_number=account_number,bank_id=bank.id).exists():
                 raise serializers.ValidationError("INVALID_ACCOUNTNUMBER")
@@ -20,8 +20,8 @@ class AccountCheckSerializer(serializers.ModelSerializer):
                 "bank"           : bank,
                 "name"           : name,
             }
-            
             return data
+        
     class Meta:
         model  = AccountHolder
         fields =['bank', 'account_number','name'] 

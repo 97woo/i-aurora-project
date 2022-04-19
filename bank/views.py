@@ -14,11 +14,11 @@ class AccountCheckView(APIView):
            
             lookup_field = "name"
             serializer = AccountCheckSerializer(
-            data=  {
-                    "bank"           : request.data['bank'],
-                    "account_number" : request.data['account_number'],
-                    "name"           : lookup_field
-                    })
+                        data=  {
+                                "bank"           : request.data['bank'],
+                                "account_number" : request.data['account_number'],
+                                "name"           : lookup_field
+                                })
             
             if serializer.is_valid(raise_exception=True):
                 return Response(serializer.data,status=200)
