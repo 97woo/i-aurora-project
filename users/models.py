@@ -21,7 +21,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
     
     identification     = models.CharField(max_length=100, unique=True)
-    point              = models.DecimalField(decimal_places=2, max_digits = 20, default=1000000)
+    point              = models.PositiveIntegerField(default=1000000)
     card_number        = models.CharField(max_length=50, unique=True, null=True)
     created_at         = models.DateTimeField(auto_now_add=True)
     updated_at         = models.DateTimeField(auto_now=True)
