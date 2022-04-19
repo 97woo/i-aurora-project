@@ -35,5 +35,3 @@ class SendMoneyListSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Send
         fields = ['amount','fee','remittor','recipient','account_no','bank_name','bankcode','create_at','send_details']
-
-

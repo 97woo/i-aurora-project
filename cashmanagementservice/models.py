@@ -1,3 +1,4 @@
+import random
 from django.db import models
 
 class Send(models.Model):

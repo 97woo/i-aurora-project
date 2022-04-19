@@ -11,7 +11,7 @@ from rest_framework.views       import APIView
 from rest_framework.response    import Response
 from rest_framework             import serializers
 from rest_framework.generics    import CreateAPIView
-
+import random
 
 class SendMoneyView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
@@ -78,11 +78,11 @@ class SendMemoView(APIView):
         if send is not None:
             serializer = SendMoneyListSerializer(send)
            
-            results =[{
-                "senddata"   : serializer.data,
+            results ={
+                "send_data"  : serializer.data,
                 "user_point" : user_point,
                 "user_card"  : user_card
-            }]
+            }
             
             return Response(results,status=200)
         else:
