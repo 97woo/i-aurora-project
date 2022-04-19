@@ -22,6 +22,11 @@ class SendMoneyView(CreateAPIView):
             with transaction.atomic():
                 data = request.data
                 serializer = self.get_serializer(data=data)
+                user_id = request.session.get('user')
+                
+                if not user_id == True:
+                    raise serializers.ValidationError("인증이 만료된 사용자 입니다.")
+                
                 if serializer.is_valid(raise_exception=True):
                     user = User.objects.get(identification=request.user)
                     user.point = user.point - request.data['amount'] - request.data['fee']
@@ -34,7 +39,9 @@ class SendMoneyView(CreateAPIView):
                         recipient = AccountHolder.objects.get(account_number=request.data['account_no'])
                         recipient.deposit =  recipient.deposit + request.data['amount'] 
                         recipient.save()
-
+                        
+                        request.session.flush()
+                        
                         return Response({"data":serializer.data,"current_send":send_first,"user_point":user.point}, status=201)
                 else:   
                     return Response(serializer.errors,status=404)

@@ -25,9 +25,10 @@ class password_check(GenericAPIView):
     serializer_class = UserPasswordSerializer
     def post(self,request):
         serializer = self.get_serializer(data=request.data)
-        
         if serializer.is_valid():
-            
+            user = User.objects.get(id=request.user.id)
+            self.request.session['user'] = True
+            self.request.session.set_expiry(600)
             return Response({"message":"success"},status=200)
         else:
             return Response(serializer.errors, status=400)
@@ -42,7 +43,7 @@ class SignInView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-      
+        
         access  = serializer.validated_data['access']
         refresh = serializer.validated_data['refresh']
         

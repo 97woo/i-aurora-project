@@ -85,9 +85,14 @@ class UserPasswordSerializer(serializers.ModelSerializer):
         def validate(self, data):
             user     = self.context['request'].user
             password = data['password']
+            session  = self.context['request'].session
             if not user.check_password(password):
                 raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
             
+            if User.objects.get(id=user.id):
+                session['user_id'] = user.id
+                print(session['user_id'])
+                
             return data
           
     
