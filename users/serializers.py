@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserIDSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if not validate_identification(data['identification']):
-            raise serializers.ValidationError('영문과 숫자로 6자리이상 20자리미만으로 입력해주세요!')
+            raise serializers.ValidationError('INVALID_ID')
         return data
     
     class Meta:
@@ -19,7 +19,7 @@ class UserIDSerializer(serializers.ModelSerializer):
 class UserSignUpSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if not validate_password(data['password']):
-            raise serializers.ValidationError('숫자만으로 6자리를 입력해주세요!')
+            raise serializers.ValidationError('INVALID_PASSWORD')
         return data
     
     def create(self, validated_data):
@@ -52,7 +52,7 @@ class UserSignInSerializer(serializers.ModelSerializer):
             data['user'] = user
             
             if not user.check_password(password):
-                raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
+                raise serializers.ValidationError('INVALID_PASSWORD')
             
             token   = RefreshToken.for_user(user)
             refresh = str(token)
@@ -66,7 +66,7 @@ class UserSignInSerializer(serializers.ModelSerializer):
             return data
         
         except User.DoesNotExist:
-            raise serializers.ValidationError("사용자가 존재하지 않습니다.")
+            raise serializers.ValidationError("NONEXISTENT_USER")
     
     class Meta:
         model = User
@@ -85,19 +85,15 @@ class UserPasswordSerializer(serializers.ModelSerializer):
         def validate(self, data):
             user     = self.context['request'].user
             password = data['password']
-            session  = self.context['request'].session
-            if not user.check_password(password):
-                raise serializers.ValidationError('올바른 패스워드를 입력해주세요')
             
-            if User.objects.get(id=user.id):
-                session['user_id'] = user.id
-                print(session['user_id'])
-                
+            if not user.check_password(password):
+                raise serializers.ValidationError('INVALID_PASSWORD')
+                 
             return data
           
     
     except User.DoesNotExist:       
-       raise serializers.ValidationError("사용자가 존재하지 않습니다.")
+       raise serializers.ValidationError("NONEXISTENT_USER")
     
     class Meta:
         model = User

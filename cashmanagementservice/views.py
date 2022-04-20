@@ -25,7 +25,7 @@ class SendMoneyView(CreateAPIView):
                 user_id = request.session.get('user')
                 
                 if not user_id == True:
-                    raise serializers.ValidationError("인증이 만료된 사용자 입니다.")
+                    raise serializers.ValidationError("INVALID_SESSION_USER")
                 
                 if serializer.is_valid(raise_exception=True):
                     user = User.objects.get(identification=request.user)
@@ -33,7 +33,7 @@ class SendMoneyView(CreateAPIView):
                 
                     serializer.save()
                     user.save() 
-                    send_first =Send.objects.latest("id").id
+                    send_first = Send.objects.latest("id").id
                    
                     if AccountHolder.objects.get(account_number=request.data['account_no']):
                         recipient = AccountHolder.objects.get(account_number=request.data['account_no'])
@@ -47,10 +47,10 @@ class SendMoneyView(CreateAPIView):
                     return Response(serializer.errors,status=404)
          
         except DatabaseError:
-            raise serializers.ValidationError("잔액이 부족합니다.")
+            raise serializers.ValidationError("DEPOSIT_ZERO")
         
         except ObjectDoesNotExist:
-            raise serializers.ValidationError("존재 하지 않는 계좌입니다.")
+            raise serializers.ValidationError("DOSENOT_EXIST")
 
 
 
@@ -84,7 +84,6 @@ class SendMemoView(APIView):
         
         if send is not None:
             serializer = SendMoneyListSerializer(send)
-           
             results ={
                 "send_data"  : serializer.data,
                 "user_point" : user_point,
